@@ -1,0 +1,199 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Studentable.net",
+    "contact": {
+      "email": "by09115@outlook.kr"
+    },
+    "x-logo": {
+      "url": "https://avatars1.githubusercontent.com/u/52960074?s=200&v=4"
+    },
+    "description": "studentable.net의 RESTful API Docs입니다.\n# Notice\n문서를 읽다가 애매하거나 잘못된 정보가 있으면 김재훈에게 문의하세요.\n"
+  },
+  "tags": [
+    {
+      "name": "Echo",
+      "description": "Example echo operations"
+    },
+    {
+      "name": "User",
+      "description": "Operations about user"
+    },
+    {
+      "name": "Meal",
+      "description": "급식 정보"
+    }
+  ],
+  "servers": [
+    {
+      "url": "http://studentable.jaehoon.kim/api/v1"
+    }
+  ],
+  "paths": {
+    "/meal": {
+      "get": {
+        "tags": [
+          "Meal"
+        ],
+        "summary": "급식 조회",
+        "description": "급식 정보를 조회합니다.\n",
+        "parameters": [
+          {
+            "name": "date",
+            "in": "query",
+            "description": "날짜",
+            "schema": {
+              "type": "string",
+              "example": "2019-09-26"
+            }
+          },
+          {
+            "name": "school_id",
+            "in": "query",
+            "description": "학교 코드",
+            "schema": {
+              "type": "string",
+              "example": "G000000170"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Meal"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "잘못된 형식의 학교 코드 혹은 날짜 형식"
+          },
+          "404": {
+            "description": "해당 정보를 찾을 수 없음"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Meal": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "description": "날짜",
+            "type": "string",
+            "example": "2019-09-26"
+          },
+          "breakfast": {
+            "description": "아침",
+            "type": "array",
+            "example": [
+              "현미밥",
+              "참치김치찌개",
+              "에그스크램블",
+              "요구르트"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "lunch": {
+            "description": "점심",
+            "type": "array",
+            "example": [
+              "현미밥",
+              "참치김치찌개",
+              "에그스크램블",
+              "요구르트"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "dinner": {
+            "description": "저녁",
+            "type": "array",
+            "example": [
+              "현미밥",
+              "참치김치찌개",
+              "에그스크램블",
+              "요구르트"
+            ],
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "Email": {
+        "description": "User email address",
+        "type": "string",
+        "format": "test",
+        "example": "john.smith@example.com"
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "description": "User supplied username",
+            "type": "string",
+            "minLength": 4,
+            "example": "John78"
+          },
+          "firstName": {
+            "description": "User first name",
+            "type": "string",
+            "minLength": 1,
+            "example": "John"
+          },
+          "lastName": {
+            "description": "User last name",
+            "type": "string",
+            "minLength": 1,
+            "example": "Smith"
+          },
+          "email": {
+            "$ref": "#/components/schemas/Email"
+          }
+        }
+      }
+    },
+    "headers": {
+      "ExpiresAfter": {
+        "description": "date in UTC when token expires",
+        "schema": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "securitySchemes": {
+      "main_auth": {
+        "type": "oauth2",
+        "flows": {
+          "implicit": {
+            "authorizationUrl": "http://example.com/api/oauth/dialog",
+            "scopes": {
+              "read:users": "read users info",
+              "write:users": "modify or remove users"
+            }
+          }
+        }
+      },
+      "api_key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "api_key"
+      },
+      "basic_auth": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  }
+}
