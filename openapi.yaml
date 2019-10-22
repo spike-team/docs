@@ -13,6 +13,10 @@ info:
 tags:
   - name: Meal
     description: 급식 정보
+  - name: TimeTableManager
+    description: 시간표 관리자 관련
+  - name: TimeTable
+    description: 시간표 관련
 servers:
   - url: 'http://studentable.jaehoon.kim/api/v1'
 paths:
@@ -47,7 +51,83 @@ paths:
           description: 잘못된 형식의 학교 코드 혹은 날짜 형식
         '404':
           description: 해당 정보를 찾을 수 없음
+  /manager/auth:
+    post:
+      tags:
+        - TimeTableManager
+      summary: 관리자 로그인
+      description: 관리자의 access 토큰과 refresh 토큰을 발급받습니다.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+      responses:
+        '201':
+          description: Login succeed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access:
+                    type: string
+                    example: Th12312isis.Tr123123uly.Accessto123123ken
+                  refresh:
+                    type: string
+                    example: 2oiejijdoia.12qweiod9hxjio.oisdmnjdfls
+        '403':
+          description: Invalid credentials
+    delete:
+      tags:
+        - TimeTableManager
+      summary: 로그아웃
+      description: 리프레시 토큰 파기
+      security:
+        - RefreshJSONWebTokenAuthentication: []
+      responses:
+        '204':
+          description: Logout succeed
+    patch:
+      tags:
+        - TimeTableManager
+      summary: 토큰 리프레시
+      description: 관리자의 액세스 토큰을 재발급합니다.
+      security:
+        - RefreshJSONWebTokenAuthentication: []
+      responses:
+        '201':
+          description: 재발급 성공
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access:
+                    type: string
+                    example: Th12312isis.Tr123123uly.Accessto123123ken
+        '401':
+          description: invalid refresh token
 components:
+  securitySchemes:
+    JSONWebTokenAuthentication:
+      type: apiKey
+      in: header
+      name: Authorization
+    RefreshJSONWebTokenAuthentication:
+      type: apiKey
+      in: header
+      name: X-Refresh-Token
   schemas:
     Meal:
       type: object
