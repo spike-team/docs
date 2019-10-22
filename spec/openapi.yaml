@@ -112,7 +112,7 @@ paths:
       summary: 토큰 리프레시
       description: 관리자의 액세스 토큰을 재발급합니다.
       security: [
-        {RefreshJsonWebTokenAuthentication: []}
+        {RefreshJSONWebTokenAuthentication: []}
       ]
       responses:
         201:
