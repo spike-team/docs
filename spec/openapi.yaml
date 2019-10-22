@@ -127,6 +127,53 @@ paths:
                     example: "Th12312isis.Tr123123uly.Accessto123123ken"
         401:
           description: invalid refresh token
+  '/manager/signup':
+    post:
+      tags:
+        - TimeTableManager
+      summary: 관리자 회원가입
+      description: 관리자의 회원가입을 진행하기 전에 이메일 인증을 수행해야 합니다.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: "by09115@outlook.kr"
+                password:
+                  type: string
+                  example: "p@ssword"
+      responses:
+        201:
+          description: 회원가입 성공
+        401:
+          description: 이메일 인증을 수행하지 않음
+        409:
+          description: 해당 이메일을 가진 계정이 이미 존재합니다.
+  '/manager/signup/verify':
+    post:
+      tags:
+        - TimeTableManager
+      summary: 관리자 이메일 인증
+      description: korea.kr로 끝나는 기 이메일으로만 가입할 수 있음.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: "by09115@korea.kr"
+      responses:
+        201:
+          description: 이메일 발송 성공
+        400:
+          description: 잘못된 이메일 형식
+        409:
+          description: 해당 이메일을 가진 계정이 이미 존재합니다.
 components:
   securitySchemes:
     JSONWebTokenAuthentication:
