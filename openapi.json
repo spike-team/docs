@@ -14,7 +14,7 @@
   "tags": [
     {
       "name": "Meal",
-      "description": "급식 정보"
+      "description": "급식 정보 관련"
     },
     {
       "name": "TimeTableManager",
@@ -23,6 +23,14 @@
     {
       "name": "TimeTable",
       "description": "시간표 관련"
+    },
+    {
+      "name": "Class",
+      "description": "수업 정보 관련"
+    },
+    {
+      "name": "NotifySubscription",
+      "description": "FCM Notification"
     }
   ],
   "servers": [
@@ -230,7 +238,7 @@
           "TimeTableManager"
         ],
         "summary": "관리자 이메일 인증",
-        "description": "korea.kr로 끝나는 기 이메일으로만 가입할 수 있음.",
+        "description": "korea.kr로 끝나는 이메일으로만 가입할 수 있음.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -255,6 +263,413 @@
           },
           "409": {
             "description": "해당 이메일을 가진 계정이 이미 존재합니다."
+          }
+        }
+      }
+    },
+    "/timetable/class": {
+      "post": {
+        "tags": [
+          "Class"
+        ],
+        "summary": "수업 추가",
+        "description": "수업을 추가합니다. 엑셀 import는 '[POST]/timetable/class/excel'로 가능합니다.\n\n*hope_day는 수업 배정 희망 요일로, index값의 배열입니다.(월요일: 0, 화요일: 1, 수요일: 2, 목요일: 3, 금요일: 4)*\n",
+        "security": [
+          {
+            "JSONWebTokenAuthentication": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "teacher_id": {
+                      "type": "string",
+                      "example": "1b20b30d1a023e01e23d"
+                    },
+                    "class_name": {
+                      "type": "string",
+                      "example": "한국사"
+                    },
+                    "times_per_week": {
+                      "type": "integer",
+                      "example": 3
+                    },
+                    "hope_day": {
+                      "type": "array",
+                      "items": {
+                        "type": "integer"
+                      },
+                      "example": [
+                        1,
+                        2,
+                        3
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "수업 추가 성공",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "class_id": {
+                        "type": "string",
+                        "example": "5da4a3d87367ec286b1394de"
+                      },
+                      "teacher_id": {
+                        "type": "string",
+                        "example": "5da4a5d77367ec31a114af0e"
+                      },
+                      "teacher_name": {
+                        "type": "string",
+                        "example": "서현철"
+                      },
+                      "class_name": {
+                        "type": "string",
+                        "example": "한국사"
+                      },
+                      "times_per_week": {
+                        "type": "integer",
+                        "example": 3
+                      },
+                      "hope_day": {
+                        "type": "array",
+                        "items": {
+                          "type": "integer"
+                        },
+                        "example": [
+                          1,
+                          2,
+                          3
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "일치하지 않는 데이터 형식"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "해당 ID를 갖고 있는 선생님을 찾을 수 없음"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Class"
+        ],
+        "summary": "수업 수정",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "example": "5da4a5d77367ec31a114af0e"
+            }
+          }
+        ],
+        "security": [
+          {
+            "JSONWebTokenAuthentication": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "teacher_id": {
+                    "type": "string",
+                    "example": "5da4a3d87367ec286b1394de"
+                  },
+                  "class_name": {
+                    "type": "string",
+                    "example": "확률과 통계"
+                  },
+                  "times_per_week": {
+                    "type": "integer",
+                    "example": 2
+                  },
+                  "hope_day": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer"
+                    },
+                    "example": [
+                      1,
+                      2,
+                      3
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "권한 없음"
+          },
+          "404": {
+            "description": "존재하지 않는 수업 ID"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Class"
+        ],
+        "summary": "수업 삭제",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "example": "5da4a5d77367ec31a114af0e"
+            }
+          }
+        ],
+        "security": [
+          {
+            "JSONWebTokenAuthentication": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "삭제 성공"
+          },
+          "401": {
+            "description": "권한 없음"
+          },
+          "404": {
+            "description": "존재하지 않는 수업 ID"
+          }
+        }
+      }
+    },
+    "/timetable": {
+      "get": {
+        "tags": [
+          "TimeTable"
+        ],
+        "summary": "시간표 조회",
+        "parameters": [
+          {
+            "name": "schoolId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "example": "G0000170"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "조회 성공",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "19wijsdo93i2ew9dsijontow"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "TimeTable"
+        ],
+        "summary": "시간표 생성",
+        "security": [
+          {
+            "JSONWebTokenAuthentication": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "생성 완료",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "1da4a5d59362ec31a114af0e"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "권한 없음"
+          }
+        }
+      }
+    },
+    "/student": {
+      "post": {
+        "tags": [
+          "NotifySubscription"
+        ],
+        "summary": "학생 리스트 추가",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "by091154@gmail.com"
+                  },
+                  "identity": {
+                    "type": "string",
+                    "example": "구글 계정 고유 코드"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "성공적으로 추가됨"
+          },
+          "409": {
+            "description": "이미 있는 계정(PUT 메서드 사용)"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "NotifySubscription"
+        ],
+        "summary": "학생 정보 수정",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "by091154@gmail.com"
+                  },
+                  "identity": {
+                    "type": "string",
+                    "example": "identity code for google account"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "수정 성공"
+          },
+          "404": {
+            "description": "없는 계정"
+          }
+        }
+      }
+    },
+    "/notify/subscribe": {
+      "post": {
+        "tags": [
+          "NotifySubscription"
+        ],
+        "summary": "Subscribe the android client notification",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "by09115@korea.kr"
+                  },
+                  "deviceToken": {
+                    "type": "string",
+                    "example": "ThisIsDeviceToken"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "알림 구독자 리스트에 성공적으로 추가됨"
+          },
+          "409": {
+            "description": "이미 있는 계정(PUT 메서드 사용)"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "NotifySubscription"
+        ],
+        "summary": "Modify Information for Subscribtion of Andtoid Notification",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "by091154@gmail.com"
+                  },
+                  "deviceToken": {
+                    "type": "string",
+                    "example": "ThisIsDeviceToken"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "수정 성공"
+          },
+          "404": {
+            "description": "없는 계정"
           }
         }
       }
