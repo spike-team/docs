@@ -364,6 +364,9 @@ paths:
                 email:
                   type: string
                   example: "by091154@gmail.com"
+                schoolCode:
+                  type: string
+                  example: "G000170"
                 schoolClass:
                   type: string
                   example: "3-2"
