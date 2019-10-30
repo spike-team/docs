@@ -539,39 +539,6 @@
       }
     },
     "/student": {
-      "post": {
-        "tags": [
-          "NotifySubscription"
-        ],
-        "summary": "학생 리스트 추가",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "email": {
-                    "type": "string",
-                    "example": "by091154@gmail.com"
-                  },
-                  "identity": {
-                    "type": "string",
-                    "example": "구글 계정 고유 코드"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "성공적으로 추가됨"
-          },
-          "409": {
-            "description": "이미 있는 계정(PUT 메서드 사용)"
-          }
-        }
-      },
       "put": {
         "tags": [
           "NotifySubscription"
@@ -587,9 +554,9 @@
                     "type": "string",
                     "example": "by091154@gmail.com"
                   },
-                  "identity": {
+                  "schoolClass": {
                     "type": "string",
-                    "example": "identity code for google account"
+                    "example": "3-2"
                   }
                 }
               }
@@ -607,7 +574,7 @@
       }
     },
     "/notify/subscribe": {
-      "post": {
+      "put": {
         "tags": [
           "NotifySubscription"
         ],
@@ -636,40 +603,7 @@
             "description": "알림 구독자 리스트에 성공적으로 추가됨"
           },
           "409": {
-            "description": "이미 있는 계정(PUT 메서드 사용)"
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "NotifySubscription"
-        ],
-        "summary": "Modify Information for Subscribtion of Andtoid Notification",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "email": {
-                    "type": "string",
-                    "example": "by091154@gmail.com"
-                  },
-                  "deviceToken": {
-                    "type": "string",
-                    "example": "ThisIsDeviceToken"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "수정 성공"
-          },
-          "404": {
-            "description": "없는 계정"
+            "description": "이미 있는 계정"
           }
         }
       }
