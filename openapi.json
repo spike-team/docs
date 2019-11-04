@@ -13,6 +13,10 @@
   },
   "tags": [
     {
+      "name": "School",
+      "description": "학교 정보 관련"
+    },
+    {
       "name": "Meal",
       "description": "급식 정보 관련"
     },
@@ -39,6 +43,38 @@
     }
   ],
   "paths": {
+    "/school": {
+      "get": {
+        "tags": [
+          "School"
+        ],
+        "summary": "학교 코드 검색",
+        "description": "# 학교 코드를 조회합니다.\n",
+        "parameters": [
+          {
+            "name": "key",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "example": "대덕소프트웨어"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "조회 성공",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "G000000170"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/meal": {
       "get": {
         "tags": [
@@ -208,11 +244,15 @@
                 "properties": {
                   "email": {
                     "type": "string",
-                    "example": "by09115@outlook.kr"
+                    "example": "by09115@korea.kr"
                   },
                   "password": {
                     "type": "string",
                     "example": "p@ssword"
+                  },
+                  "schoolCode": {
+                    "type": "string",
+                    "example": "G0000170"
                   }
                 }
               }
@@ -222,9 +262,6 @@
         "responses": {
           "201": {
             "description": "회원가입 성공"
-          },
-          "401": {
-            "description": "이메일 인증을 수행하지 않음"
           },
           "409": {
             "description": "해당 이메일을 가진 계정이 이미 존재합니다."
@@ -238,28 +275,21 @@
           "TimeTableManager"
         ],
         "summary": "관리자 이메일 인증",
-        "description": "korea.kr로 끝나는 이메일으로만 가입할 수 있음.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "email": {
-                    "type": "string",
-                    "example": "by09115@korea.kr"
-                  }
-                }
-              }
+        "description": "이메일에 인증 링크를 같이 발송",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "query",
+            "description": "인증 코드",
+            "schema": {
+              "type": "string",
+              "example": "{{UUID}}"
             }
           }
-        },
+        ],
         "responses": {
           "201": {
-            "description": "이메일 발송 성공"
-          },
-          "400": {
-            "description": "잘못된 이메일 형식"
+            "description": "인증 성공"
           },
           "409": {
             "description": "해당 이메일을 가진 계정이 이미 존재합니다."
