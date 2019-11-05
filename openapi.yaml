@@ -47,6 +47,8 @@ paths:
               schema:
                 type: string
                 example: G000000170
+        '400':
+          description: 해당 학교가 없음
   /meal:
     get:
       tags:
