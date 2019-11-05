@@ -14,6 +14,7 @@ info:
     studentable.net의 RESTful API Docs입니다.
     # Notice
     문서를 읽다가 애매하거나 잘못된 정보가 있으면 김재훈에게 문의하세요.
+    2019년 11월 5일 기준 서버 주소는 ec2.jaehoon.kim:8080/api/v1입니다.
 
 tags:
   - name: School
@@ -32,7 +33,7 @@ servers:
   - url: 'http://studentable.jaehoon.kim/api/v1'
 
 paths:
-  '/school':
+  '/school/search':
     get:
       tags:
         - School
@@ -55,6 +56,15 @@ paths:
                 example: "G000000170"
         400:
           description: 해당 학교가 없음
+  '/schools':
+    get:
+      tags: 
+        - School
+      summary: 학교 코드 전체 조회
+      description: 모든 학교의 코드를 조회
+      responses:
+        200:
+          description: 조회 성공
   '/meal':
     get:
       tags:
