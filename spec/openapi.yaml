@@ -53,7 +53,7 @@ paths:
             application/json:
               schema:
                 type: string
-                example: "G000000170"
+                example: "7430310"
         400:
           description: 해당 학교가 없음
   '/schools':
@@ -84,7 +84,7 @@ paths:
         description: 학교 코드
         schema:
           type: string
-          example: "G000000170"
+          example: "7430310"
       responses:
         '200':
           description: Success
@@ -186,7 +186,7 @@ paths:
                   example: "p@ssword"
                 schoolCode:
                   type: string
-                  example: "G0000170"
+                  example: "7430310"
       responses:
         201:
           description: 회원가입 성공
@@ -349,7 +349,7 @@ paths:
           in: query
           schema:
             type: string
-            example: "G0000170"
+            example: "7430310"
       responses:
         200:
           description: 조회 성공
@@ -396,9 +396,12 @@ paths:
                 email:
                   type: string
                   example: "by091154@gmail.com"
+                deviceToken:
+                  type: string
+                  example: "deviceToken"
                 schoolCode:
                   type: string
-                  example: "G000170"
+                  example: "7430310"
                 schoolClass:
                   type: string
                   example: "3-2"
@@ -407,29 +410,6 @@ paths:
           description: 수정 성공
         404:
           description: 없는 계정
-
-  '/notify/subscribe':
-    put:
-      tags:
-        - NotifySubscription
-      summary: Subscribe the android client notification
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                email:
-                  type: string
-                  example: "by09115@korea.kr"
-                deviceToken:
-                  type: string
-                  example: "ThisIsDeviceToken"
-      responses:
-        201:
-          description: 알림 구독자 리스트에 성공적으로 추가됨
-        409:
-          description: 이미 있는 계정
 
 components:
   securitySchemes:
@@ -445,25 +425,21 @@ components:
     Meal:
       type: object
       properties:
-        date:
-          description: 날짜
-          type: string
-          example: '2019-09-26'
         breakfast:
           description: 아침
           type: array
-          example: ["현미밥", "참치김치찌개", "에그스크램블", "요구르트"]
+          example: ["현미밥", "북어국", "닭살바베큐소스조림", "근대된장무침", "배추김치", "토마토/설탕"]
           items:
             type: string
         lunch:
           description: 점심
           type: array
-          example: ["현미밥", "참치김치찌개", "에그스크램블", "요구르트"]
+          example: ["뿌리채소영양밥", "두부팽이된장국", "타워함박스테이크", "파래김구이/양념장", "열무김치", "도라지오이생채"]
           items:
             type: string
         dinner:
           description: 저녁
           type: array
-          example: ["현미밥", "참치김치찌개", "에그스크램블", "요구르트"]
+          example: ["쌀밥", "다시마무채국", "마파두부(두반장)", "옥수수치즈닭불구이", "나박김치", "골드키위젤리"]
           items:
             type: string
