@@ -43,7 +43,7 @@
     }
   ],
   "paths": {
-    "/school/search": {
+    "/school": {
       "get": {
         "tags": [
           "School"
@@ -73,7 +73,10 @@
             }
           },
           "400": {
-            "description": "해당 학교가 없음"
+            "description": "잘못된 요청(e.g. 파라미터가 없는 경우 등)"
+          },
+          "404": {
+            "description": "해당 학교를 찾을 수 없음"
           }
         }
       }
