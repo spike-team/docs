@@ -71,7 +71,7 @@ paths:
       parameters:
         - name: date
           in: query
-          description: 날짜
+          description: 날짜(일 단위는 어떻게 적든 1일로 반환됨)
           schema:
             type: string
             example: '2019-09-26'
@@ -420,39 +420,36 @@ components:
     Meal:
       type: object
       properties:
-        breakfast:
-          description: 아침
+        menus:
+          description: 급식 리스트
           type: array
-          example:
-            - 현미밥
-            - 북어국
-            - 닭살바베큐소스조림
-            - 근대된장무침
-            - 배추김치
-            - 토마토/설탕
           items:
-            type: string
-        lunch:
-          description: 점심
-          type: array
-          example:
-            - 뿌리채소영양밥
-            - 두부팽이된장국
-            - 타워함박스테이크
-            - 파래김구이/양념장
-            - 열무김치
-            - 도라지오이생채
-          items:
-            type: string
-        dinner:
-          description: 저녁
-          type: array
-          example:
-            - 쌀밥
-            - 다시마무채국
-            - 마파두부(두반장)
-            - 옥수수치즈닭불구이
-            - 나박김치
-            - 골드키위젤리
-          items:
-            type: string
+            type: object
+            properties:
+              breakfast:
+                type: array
+                items:
+                  type: string
+                  example: 급식이 없습니다.
+              lunch:
+                type: array
+                example:
+                  - 비피더스사과
+                  - 흰밥(쌀밥)
+                  - 실파계란국
+                  - 삼겹살김치볶음
+                  - 견과류파래돌김자반
+                  - 깍두기
+                items:
+                  type: string
+              dinner:
+                type: array
+                example:
+                  - 차조밥
+                  - 돼지등뼈감자탕
+                  - 도토리묵야채무침
+                  - 배추김치
+                  - 치즈연어까스/타르타르소스
+                  - 블루베리쥬스
+                items:
+                  type: string
